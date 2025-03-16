@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management</title>
+    <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background-color: #96efff;
+            width: 50%;
+            height: 80%;
+            border: 5px solid #dddddd;
+            border-radius: 5px;
+            overflow: auto;
+        }
+        
+        h1, h3 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        form input {
+            padding: 8px;
+            margin: 0 10px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+        }
+        
+        form button {
+            padding: 8px 16px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: #ffffff;
+            cursor: pointer;
+        }
+        
+        form button:hover {
+            background-color: #45a049;
+        }
+        
+        #studentList {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        li {
+            background-color: #ffffff;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #dddddd;
+            width:fit-content;
+            gap: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        button {
+            padding: 5px 10px;
+            background-color: #f44336;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #e53935;
+        }        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Management</h1>
+
+        <form id="studentForm">
+            <input type="text" id="name" placeholder="Student Name" required>
+            <input type="number" id="age" placeholder="Age" required>
+            <button type="submit">Submit</button>
+        </form>
+
+        <h3>Students List</h3>
+        <ul id="studentList"></ul>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            loadStudents();
+            
+            document.getElementById("studentForm").addEventListener("submit", (event) => {
+                event.preventDefault();
+                let name = document.getElementById("name").value;
+                let age = document.getElementById("age").value;
+                let studentId = document.getElementById("studentForm").dataset.studentId;
+        
+                let action = studentId ? "edit" : "add";
+        
+                fetch("data.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ action, name, age, studentId })
+                })
+                .then(() => {
+                    loadStudents();
+                    document.getElementById("name").value = "";
+                    document.getElementById("age").value = "";
+                    delete document.getElementById("studentForm").dataset.studentId;
+                })
+                .catch(error => console.error("Error:", error));
+            });
+        });
+        
+        function loadStudents() {
+            fetch("data.php?action=get")
+                .then(response => response.json())
+                .then(students => {
+                    const list = document.querySelector("#studentList");
+                    list.innerHTML = students.map((student, index) => `
+                        <li>
+                            Name: ${student.name} - Age: ${student.age}
+                            <button onclick="editStudent(${index})">Edit</button>
+                            <button onclick="deleteStudent(${index})">Delete</button>
+                        </li>
+                    `).join('');
+                })
+                .catch(error => console.error("Error:", error));
+        }
+        
+        function deleteStudent(index) {
+            fetch("data.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ action: "delete", index })
+            })
+            .then(() => loadStudents())
+            .catch(error => console.error("Error:", error));
+        }
+        
+        function editStudent(index) {
+            fetch(`data.php?action=get&index=${index}`)  // Correct the fetch request
+            .then(response => response.json())
+            .then(student => {
+                if (student.error) {
+                    console.error("Error:", student.error);
+                    return;
+                }
+                document.getElementById("name").value = student.name;
+                document.getElementById("age").value = student.age;
+                document.getElementById("studentForm").dataset.studentId = index;
+            })
+            .catch(error => console.error("Error:", error));
+        }        
+    </script>
+</body>
+</html>
