@@ -20,9 +20,9 @@ JOIN departments d ON f.department_id = d.department_id
 WHERE d.department_name = 'Computer Science';
 ```
 ## Explaination
-Retrieves all faculty members from the 'Computer Science' department.
-JOIN departments: Connects faculty with its departments.
-WHERE d.department_name = 'Computer Science': Filters only the Computer Science department.
+- Retrieves all faculty members from the 'Computer Science' department.
+- JOIN departments: Connects faculty with its departments.
+- WHERE d.department_name = 'Computer Science': Filters only the Computer Science department.
 
 # 3. List all courses a particular student is enrolled in.
 ```ruby
@@ -33,10 +33,10 @@ JOIN students s ON e.student_id = s.student_id
 WHERE s.first_name = 'Vat' AND s.last_name = 'Vannaden';
 ```
 ## Explaination
-Finds all courses where a student named 'Vat Vannaden' is enrolled.
-JOIN enrollments: Connects courses with all enrollment records.
-JOIN students: Links enrollments to student.
-WHERE s.first_name = 'Vat' AND s.last_name = 'Vannaden': Filters by the student's full name.
+- Finds all courses where a student named 'Vat Vannaden' is enrolled.
+- JOIN enrollments: Connects courses with all enrollment records.
+- JOIN students: Links enrollments to student.
+- WHERE s.first_name = 'Vat' AND s.last_name = 'Vannaden': Filters by the student's full name.
 
 # 4. Retrieve students who have not enrolled in any course.
 ```ruby
@@ -46,9 +46,9 @@ LEFT JOIN enrollments e ON s.student_id = e.student_id
 WHERE e.student_id IS NULL;
 ```
 ## Explaination
-Finds students who are not enrolled in any course.
-LEFT JOIN enrollments: Includes all students, even those with no enrollments.
-WHERE e.student_id IS NULL: Filters out students who have no records in enrollments.
+- Finds students who are not enrolled in any course.
+- LEFT JOIN enrollments: Includes all students, even those with no enrollments.
+- WHERE e.student_id IS NULL: Filters out students who have no records in enrollments.
 
 # 5. Find the average grade of students in a specific course.
 ```ruby
@@ -58,7 +58,7 @@ JOIN enrollments e ON c.course_id = e.course_id
 WHERE c.course_code = 'MATH201';
 ```
 ## Explaination
-Calculates the average grade of students in 'MATH201'.
-JOIN enrollments: Connects courses with student grades.
-AVG(e.grade): Calculate the average grade.
-WHERE c.course_code = 'MATH201': Filters to include only 'MATH201'.
+- Calculates the average grade of students in 'MATH201'.
+- JOIN enrollments: Connects courses with student grades.
+- AVG(e.grade): Calculate the average grade.
+- WHERE c.course_code = 'MATH201': Filters to include only 'MATH201'.
