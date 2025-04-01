@@ -80,11 +80,11 @@ INSERT INTO enrollments (student_id, course_id, enrollment_date, grade) VALUES
 (7, 3, '2025-02-07', 80.00);
 
 -- 1. Retrieve all students who enrolled in a specific course.
-		SELECT s.student_id, s.first_name, s.last_name, s.email 
-		FROM students s
-		JOIN enrollments e ON s.student_id = e.student_id
-		JOIN courses c ON e.course_id = c.course_id
-		WHERE c.course_code = 'CS101';
+SELECT s.student_id, s.first_name, s.last_name, s.email 
+FROM students s
+JOIN enrollments e ON s.student_id = e.student_id
+JOIN courses c ON e.course_id = c.course_id
+WHERE c.course_code = 'CS101';
 
 -- 2. Find all faculty members in a particular department.
 SELECT f.faculty_id, f.teacher_name, f.email 
