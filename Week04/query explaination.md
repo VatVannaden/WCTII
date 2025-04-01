@@ -7,10 +7,10 @@ JOIN courses c ON e.course_id = c.course_id
 WHERE c.course_code = 'CS101';
 ```
 ## Explaination
-Retrieves all students that enrolled in the course with course 'CS101'.
-JOIN enrollments: Links students to enrollment records.
-JOIN courses: Links enrollment records to courses.
-WHERE c.course_code = 'CS101': Filters the students enrolled in 'CS101'.
+- Retrieves all students that enrolled in the course with course 'CS101'.
+- JOIN enrollments: Links students to enrollment records.
+- JOIN courses: Links enrollment records to courses.
+- WHERE c.course_code = 'CS101': Filters the students enrolled in 'CS101'.
 
 # 2. Find all faculty members in a particular department.
 ```ruby
